@@ -9,6 +9,13 @@ const TEXT =
 if (TEXT.length < 1 || TEXT.length > 200) {
   throw new Error(`entry must be 1-200 characters, got ${TEXT.length}`);
 }
+// Count code points, not UTF-16 units, so an astral character counts once.
+if ([...TEXT].length > 200) {
+  throw new Error(`entry must be at most 200 characters, got ${[...TEXT].length}`);
+}
+if (TEXT.includes("\n") || TEXT.includes("\r")) {
+  throw new Error("entry must be a single line with no line breaks");
+}
 if (TEXT.trim().length === 0) {
   throw new Error("entry must not be only whitespace");
 }
